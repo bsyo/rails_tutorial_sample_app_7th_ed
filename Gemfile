@@ -3,6 +3,10 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby "3.1.2"
 
+# This must be the first gem listed
+
+gem 'appmap', :groups => [:development, :test]
+
 gem "rails",                      "7.0.4"
 gem "image_processing",           "1.12.2"
 gem "active_storage_validations", "0.9.8"
@@ -38,6 +42,7 @@ group :test do
   gem "minitest-reporters",       "1.5.0"
   gem "guard",                    "2.18.0"
   gem "guard-minitest",           "2.4.6"
+  gem 'simplecov'
 end
 
 group :production do

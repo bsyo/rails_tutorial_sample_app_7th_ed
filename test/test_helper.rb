@@ -1,5 +1,9 @@
 ENV["RAILS_ENV"] ||= "test"
 require_relative "../config/environment"
+require 'simplecov'
+SimpleCov.start do
+  coverage_dir 'tmp/coverage'
+end
 require "rails/test_help"
 require "minitest/reporters"
 Minitest::Reporters.use!
