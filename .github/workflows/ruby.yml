@@ -27,9 +27,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v2
       with:
-	      token: "${{secrets.GH_TOKEN}}"
+        token: ${{ secrets.GH_TOKEN }}
+    - name: Display repository name
+        run: echo "Repository name is ${{ env.GITHUB_REPOSITORY }}"
     - name: Set up Ruby
     # To automatically get bug fixes and new Ruby versions for ruby/setup-ruby,
     # change this to (see https://github.com/ruby/setup-ruby#versioning):
