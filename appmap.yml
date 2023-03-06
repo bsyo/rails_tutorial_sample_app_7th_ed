@@ -1,4 +1,4 @@
-name: bsyo/rails_tutorial_sample_app_7th_ed
+name: rails_tutorial_sample_app_7th_ed
 packages:
   - path: app/controllers
   - path: app/models
