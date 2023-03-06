@@ -39,8 +39,8 @@ jobs:
     - name: Run tests
       run: bundle exec rake test
     - name: AppMap Analysis
-      run: npx @appland/scanner scan -C ${{github.event.pull_request.head.sha}} -b ${{github.event.pull_request.head.ref}} --update-commit-status true --no-upload
+      run: npx @appland/scanner ci -C ${{github.event.pull_request.head.sha}} -b ${{github.event.pull_request.head.ref}} --update-commit-status true --no-upload
       if: ${{ github.ref != 'refs/heads/main' }}
     - name: AppMap Analysis
-      run: npx @appland/scanner scan -C $(git rev-parse HEAD) -b $(git branch --show-current) --update-commit-status true --no-upload
+      run: npx @appland/scanner ci -C $(git rev-parse HEAD) -b $(git branch --show-current) --update-commit-status true --no-upload
       if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
