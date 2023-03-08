@@ -49,6 +49,7 @@ jobs:
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
       resultPath: tmp/coverage
+
     - name: Archive coverage artifacts
       uses: actions/upload-artifact@v2
       with:
