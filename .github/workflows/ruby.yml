@@ -46,6 +46,8 @@ jobs:
       if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
     - name: Simplecov Report
       uses: aki77/simplecov-report-action@v1
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
       resultPath: tmp/coverage
     - name: Archive coverage artifacts
       uses: actions/upload-artifact@v2
