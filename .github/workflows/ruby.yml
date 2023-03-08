@@ -44,3 +44,5 @@ jobs:
     - name: AppMap Analysis
       run: npx @appland/scanner ci -C $(git rev-parse HEAD) -b $(git branch --show-current) --no-upload
       if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    - name: Simplecov Report
+      uses: aki77/simplecov-report-action@v1
