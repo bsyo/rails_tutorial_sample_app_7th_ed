@@ -52,5 +52,3 @@ jobs:
       with:
         name: coverage
         path: tmp/coverage
-      # upload when coverage is below threshold
-        if: ${{ failure() }}
