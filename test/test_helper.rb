@@ -4,6 +4,7 @@ require 'simplecov'
 SimpleCov.start do
   coverage_dir 'tmp/coverage'
 end
+
 require "rails/test_help"
 require "minitest/reporters"
 Minitest::Reporters.use!
