@@ -50,5 +50,5 @@ jobs:
     - name: Archive coverage artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: tmp/coverage
+        name: coverage
         path: tmp/coverage
