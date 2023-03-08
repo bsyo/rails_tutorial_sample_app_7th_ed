@@ -48,7 +48,10 @@ jobs:
         failedThreshold: 80
         resultPath: tmp/coverage/.last_run.json
     - name: Archive coverage artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: coverage
-        path: tmp/coverage
+      run: |
+        if [ $? -eq 1 ]; then
+        uses: actions/upload-artifact@v2
+        with:
+          name: coverage
+          path: tmp/coverage
+        fi
