@@ -13,10 +13,6 @@ on:
   pull_request:
     branches: [ main ]
 
-permissions:
-  contents: read
-  actions: write
-
 env:
   APPMAP: true
   APPLAND_API_KEY: "${{secrets.APPLAND_API_KEY}}"
