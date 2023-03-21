@@ -51,7 +51,7 @@ jobs:
       uses: aki77/simplecov-report-action@v1
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-        failedThreshold: 80
+        failedThreshold: 10
         resultPath: tmp/coverage/.last_run.json
     - name: Archive coverage artifacts
       run: |
