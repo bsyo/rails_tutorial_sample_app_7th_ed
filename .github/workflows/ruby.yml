@@ -13,8 +13,9 @@ on:
   pull_request:
     branches: [ main ]
 
-permissions:
-  contents: read
+concurrency: 
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
 
 env:
   APPMAP: true
@@ -28,6 +29,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+      with:
+        token: ${{ secrets.GH_TOKEN }}
     - name: Set up Ruby
     # To automatically get bug fixes and new Ruby versions for ruby/setup-ruby,
     # change this to (see https://github.com/ruby/setup-ruby#versioning):
@@ -36,9 +39,38 @@ jobs:
         bundler-cache: true # runs 'bundle install' and caches installed gems automatically
     - name: Run tests
       run: bundle exec rake test
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        files: ./tmp/coverage/coverage.xml
+        fail_ci_if_error: true
     - name: AppMap Analysis
-      run: npx @appland/scanner ci -C ${{github.event.pull_request.head.sha}} -b ${{github.event.pull_request.head.ref}} --update-commit-status
+      run: npx @appland/scanner ci -C ${{github.event.pull_request.head.sha}} -b ${{github.event.pull_request.head.ref}} --no-upload
       if: ${{ github.ref != 'refs/heads/main' }}
     - name: AppMap Analysis
-      run: npx @appland/scanner ci -C $(git rev-parse HEAD) -b $(git branch --show-current) --update-commit-status
+      run: npx @appland/scanner ci -C $(git rev-parse HEAD) -b $(git branch --show-current) --no-upload
       if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    - name: Simplecov Report
+      uses: aki77/simplecov-report-action@v1
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        failedThreshold: 10
+        resultPath: tmp/coverage/.last_run.json
+    - name: Archive coverage artifacts
+      run: |
+        if [ $? -eq 1 ]; then
+        uses: actions/upload-artifact@v2
+        with:
+          name: coverage
+          path: tmp/coverage
+        fi
+    - uses: 5monkeys/cobertura-action@master
+      with:
+        path: tmp/coverage/coverage.xml
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        minimum_coverage: 30
+        show_missing: true
+        show_class_names: true
+        link_missing_lines: true
+        report_name: code coverage results
