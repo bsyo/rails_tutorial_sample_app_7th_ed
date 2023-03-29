@@ -13,6 +13,10 @@ on:
   pull_request:
     branches: [ main ]
 
+concurrency: 
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
+
 env:
   APPMAP: true
   APPLAND_API_KEY: "${{secrets.APPLAND_API_KEY}}"
@@ -61,3 +65,23 @@ jobs:
           name: coverage
           path: tmp/coverage
         fi
+    - uses: 5monkeys/cobertura-action@master
+      with:
+        path: tmp/coverage/coverage.xml
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        minimum_coverage: 80
+        show_missing: true
+        show_class_names: true
+        link_missing_lines: true
+        report_name: code coverage results
+    - name: Update diagram
+      id: make_diagram
+      uses: githubocto/repo-visualizer@0.7.1
+      with:
+        output_file: "output-diagram.svg"
+        artifact_name: "my-diagram"
+    - name: Get artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: "my-diagram"
+        path: "downloads"
